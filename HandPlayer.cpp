@@ -1,6 +1,8 @@
 #include <iostream>
-#include "HandPlayer.h"
-void HandPlayer::playHand()
-{
-std::cout << "Player selects cards to play...\n";
+#include "HandGenerator.h"
+Hand HandGenerator::generateHand(){
+std::cout << "Generating cards for player...\n";
+Hand hand;
+hand.value = 6; // dummy: simulate flush
+return hand;
 }
