@@ -3,3 +3,4 @@
 class HandGenerator{
 public:
 Hand generateHand();
+};
