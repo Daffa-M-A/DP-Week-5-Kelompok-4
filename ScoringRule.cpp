@@ -1,8 +1,18 @@
 #include <iostream>
 #include "ScoringRule.h"
 ScoringRule::ScoringRule(){
-fullHouseChecker.setNext(&flushChecker);
-flushChecker.setNext(&pairChecker);
+highCardChecker.setNext(&pairChecker);
+pairChecker.setNext(&twoPairChecker);
+twoPairChecker.setNext(&threeOfAKindChecker);
+threeOfAKindChecker.setNext(&straightChecker);
+straightChecker.setNext(&flushChecker);
+flushChecker.setNext(&fullHouseChecker);
+fullHouseChecker.setNext(&fourOfAKindChecker);
+fourOfAKindChecker.setNext(&straightFlushChecker);
+straightFlushChecker.setNext(&royalFlushChecker);
+royalFlushChecker.setNext(&fiveOfAKindChecker);
+fiveOfAKindChecker.setNext(&flushFiveChecker);
+flushFiveChecker.setNext(&flushFiveChecker);
 }
 int ScoringRule::scoreHand(const Hand& hand){
 std::cout << "Calculating hand score...\n";
