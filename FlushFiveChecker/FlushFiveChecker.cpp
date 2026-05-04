@@ -2,7 +2,7 @@
 #include "FlushFiveChecker.h"
 // dummy helper
 bool isFlushFive(const Hand& hand){
-return hand.value == 6;
+return hand.value == 13;
 }
 HandRank FlushFiveChecker::check(const Hand& hand){
 if (isFlushFive(hand)){

@@ -3,7 +3,7 @@
 // dummy helper
 bool isStraightFlush(const Hand& hand){
 
-return hand.value == 2;
+return hand.value == 9;
 }
 HandRank StraightFlushChecker::check(const Hand& hand){
 if (isStraightFlush(hand)){

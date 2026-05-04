@@ -31,7 +31,7 @@ FourOfAKindChecker fourOfAKindChecker;
 StraightFlushChecker straightFlushChecker;
 RoyalFlushChecker royalFlushChecker;
 FiveOfAKindChecker fiveOfAKindChecker;
-FlushHouseChecker flushFiveChecker;
+FlushHouseChecker flushHouseChecker;
 FlushFiveChecker flushFiveChecker;
 
 int convertRankToScore(HandRank rank);

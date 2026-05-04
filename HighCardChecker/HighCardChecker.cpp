@@ -2,7 +2,7 @@
 #include "HighCardChecker.h"
 // dummy helper
 bool isHighCard(const Hand& hand){
-return hand.value == 6;
+return hand.value == 1;
 }
 HandRank HighCardChecker::check(const Hand& hand){
 if (isHighCard(hand)){

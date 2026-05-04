@@ -3,7 +3,7 @@
 // dummy helper
 bool isThreeOfAKind(const Hand& hand){
 
-return hand.value == 2;
+return hand.value == 4;
 }
 HandRank ThreeOfAKindChecker::check(const Hand& hand){
 if (isThreeOfAKind(hand)){

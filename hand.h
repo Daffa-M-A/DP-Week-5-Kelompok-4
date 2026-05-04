@@ -1,4 +1,8 @@
 #pragma once
-struct Hand{
-int value = 0;
+#include <vector>
+#include "Card.h"
+
+struct Hand
+{
+    std::vector<Card> cards;
 };

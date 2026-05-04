@@ -3,7 +3,7 @@
 // dummy helper
 bool isStraight(const Hand& hand){
 
-return hand.value == 2;
+return hand.value == 5;
 }
 HandRank StraightChecker::check(const Hand& hand){
 if (isStraight(hand)){

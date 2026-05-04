@@ -3,7 +3,7 @@
 // dummy helper
 bool isRoyalFlush(const Hand& hand){
 
-return hand.value == 2;
+return hand.value == 10;
 }
 HandRank RoyalFlushChecker::check(const Hand& hand){
 if (isRoyalFlush(hand)){

@@ -1,22 +1,23 @@
 #include <iostream>
 #include "ScoringRule.h"
 ScoringRule::ScoringRule(){
-highCardChecker.setNext(&pairChecker);
-pairChecker.setNext(&twoPairChecker);
-twoPairChecker.setNext(&threeOfAKindChecker);
-threeOfAKindChecker.setNext(&straightChecker);
-straightChecker.setNext(&flushChecker);
-flushChecker.setNext(&fullHouseChecker);
-fullHouseChecker.setNext(&fourOfAKindChecker);
-fourOfAKindChecker.setNext(&straightFlushChecker);
-straightFlushChecker.setNext(&royalFlushChecker);
-royalFlushChecker.setNext(&fiveOfAKindChecker);
-fiveOfAKindChecker.setNext(&flushFiveChecker);
-flushFiveChecker.setNext(&flushFiveChecker);
+    flushFiveChecker.setNext(&flushHouseChecker);
+    flushHouseChecker.setNext(&fiveOfAKindChecker);
+    fiveOfAKindChecker.setNext(&royalFlushChecker);
+    royalFlushChecker.setNext(&straightFlushChecker);
+    straightFlushChecker.setNext(&fourOfAKindChecker);
+    fourOfAKindChecker.setNext(&fullHouseChecker);
+    fullHouseChecker.setNext(&flushChecker);
+    flushChecker.setNext(&straightChecker);
+    straightChecker.setNext(&threeOfAKindChecker);
+    threeOfAKindChecker.setNext(&twoPairChecker);
+    twoPairChecker.setNext(&pairChecker);
+    pairChecker.setNext(&highCardChecker);
 }
+
 int ScoringRule::scoreHand(const Hand& hand){
 std::cout << "Calculating hand score...\n";
-HandRank rank = fullHouseChecker.check(hand);
+HandRank rank = flushFiveChecker.check(hand);
 int score = convertRankToScore(rank);
 std::cout << "Final score = " << score << "\n";
 return score;

@@ -2,7 +2,7 @@
 #include "FiveOfAKindChecker.h"
 // dummy helper
 bool isFiveOfAKind(const Hand& hand){
-return hand.value == 6;
+return hand.value == 11;
 }
 HandRank FiveOfAKindChecker::check(const Hand& hand){
 if (isFiveOfAKind(hand)){
