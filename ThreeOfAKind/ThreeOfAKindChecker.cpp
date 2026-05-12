@@ -5,7 +5,6 @@
 HandRank ThreeOfAKindChecker::check(const Hand& hand) {
     std::map<int, int> rankCount;
     
-    // Hitung kemunculan setiap kartu
     for (const auto& card : hand.cards) {
         rankCount[card.rank]++;
     }
@@ -16,17 +15,15 @@ HandRank ThreeOfAKindChecker::check(const Hand& hand) {
     for (const auto& count : rankCount) {
         if (count.second >= 3) {
             hasThreeOfAKind = true;
-            break; // Kembar tiga ditemukan, berhenti mencari
+            break;
         }
     }
 
-    // KEPUTUSAN: Apakah ketemu Three of a Kind?
     if (hasThreeOfAKind) {
         std::cout << "Detected THREE OF A KIND\n";
         return HandRank::THREE_OF_A_KIND;
     }
 
-    // JIKA GAGAL: Lempar ke checker selanjutnya (misal: TwoPairChecker)
     if (nextChecker) {
         return nextChecker->check(hand);
     }

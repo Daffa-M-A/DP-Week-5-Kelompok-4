@@ -5,14 +5,12 @@
 HandRank FiveOfAKindChecker::check(const Hand& hand) {
     std::map<int, int> rankCount;
     
-    // Hitung kemunculan setiap rank
     for (const auto& card : hand.cards) {
         rankCount[card.rank]++;
     }
 
     bool hasFiveOfAKind = false;
     
-    // Cek apakah ada satu rank yang muncul minimal 5 kali
     for (const auto& count : rankCount) {
         if (count.second >= 5) {
             hasFiveOfAKind = true;

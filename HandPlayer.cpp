@@ -1,41 +1,67 @@
 #include "HandPlayer.h"
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 void HandPlayer::playHand(const Hand &availableHand) {
-    // 1. Reset pilihan sebelumnya agar tidak menumpuk
     selectedCards.clear();
+    
+    std::vector<int> chosenIndices; 
 
-    std::cout << "\n=== MODE PEMILIHAN KARTU ===\n";
+    std::cout << "PEMILIHAN KARTU\n";
+    std::cout << "Kartu di tanganmu saat ini:\n";
+    for (int i = 0; i < (int)availableHand.cards.size(); ++i) {
+        std::cout << "[" << i << "] " << availableHand.cards[i].toString() << "\n";
+    }
+    std::cout << "-----------------------------------\n";
+
     std::cout << "Pilih indeks kartu (0 - " << availableHand.cards.size() - 1 << ")\n";
-    std::cout << "Ketik -1 jika sudah selesai.\n";
+    std::cout << "Maksimal 5 kartu. Ketik -1 jika sudah selesai lebih awal.\n";
 
     int choice;
-    while (true) {
-        std::cout << "Masukkan Indeks: ";
+    
+    while (selectedCards.size() < 5) { 
+        std::cout << "\nMasukkan Indeks (terpilih " << selectedCards.size() << "/5): ";
         
-        // Validasi: Cek apakah input berupa angka
         if (!(std::cin >> choice)) {
-            std::cout << "Input harus angka!\n";
-            std::cin.clear(); // Bersihkan status error
-            std::cin.ignore(1000, '\n'); // Buang input yang salah
+            std::cout << "Input tidak valid! Harap masukkan angka.\n";
+            std::cin.clear(); 
+            std::cin.ignore(1000, '\n'); 
             continue;
         }
 
         if (choice == -1) break;
 
-        // Validasi: Cek jangkauan indeks
         if (choice >= 0 && choice < (int)availableHand.cards.size()) {
-            selectedCards.push_back(availableHand.cards[choice]);
-            std::cout << "Berhasil menambahkan kartu ke-index " << choice << "\n";
+            
+            if (std::find(chosenIndices.begin(), chosenIndices.end(), choice) != chosenIndices.end()) {
+                std::cout << "Kartu di indeks [" << choice << "] sudah kamu pilih! Silakan pilih yang lain.\n";
+            } else {
+                selectedCards.push_back(availableHand.cards[choice]);
+                chosenIndices.push_back(choice);
+                
+                std::cout << "=> Menambahkan " << availableHand.cards[choice].toString() << " ke dalam pilihanmu.\n";
+            }
+            
         } else {
-            std::cout << "Indeks tidak tersedia!\n";
+            std::cout << "Indeks di luar batas! Masukkan angka antara 0 sampai " << availableHand.cards.size() - 1 << ".\n";
         }
     }
 
-    // 2. Bungkus vector hasil pilihan ke dalam objek finalHand
-    // Asumsi: Constructor Hand menerima (id, vector_card)
     finalHand = Hand{1, selectedCards};
     
-    std::cout << "Selesai! " << selectedCards.size() << " kartu telah dipilih.\n";
+    std::cout << "\n=== PEMILIHAN SELESAI ===\n";
+    std::cout << "Kamu telah mengamankan " << selectedCards.size() << " kartu untuk dievaluasi oleh sistem.\n";
+}
+
+void HandPlayer::showSelected() const {
+    if (selectedCards.empty()) {
+        std::cout << "Belum ada kartu yang dipilih.\n";
+        return;
+    }
+
+    std::cout << "\nKartu yang akan kamu mainkan:\n";
+    for (const auto& card : selectedCards) {
+        std::cout << "- " << card.toString() << "\n";
+    }
 }

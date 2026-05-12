@@ -4,7 +4,6 @@
 #include "FlushHouseChecker.h"
 
 HandRank FlushHouseChecker::check(const Hand& hand) {
-    // 1. Kelompokkan kartu berdasarkan lambangnya dulu
     std::map<char, std::vector<int>> suitToRanks;
     for (const auto& card : hand.cards) {
         suitToRanks[card.suit].push_back(card.rank);
@@ -12,15 +11,12 @@ HandRank FlushHouseChecker::check(const Hand& hand) {
 
     bool hasFlushHouse = false;
 
-    // 2. Cek setiap kelompok lambang
     for (const auto& pair : suitToRanks) {
         const std::vector<int>& ranks = pair.second;
 
-        // Harus ada minimal 5 kartu dengan lambang ini
         if (ranks.size() >= 5) {
             std::map<int, int> rankCount;
             
-            // Hitung kemunculan rank DI DALAM lambang yang sama ini
             for (int rank : ranks) {
                 rankCount[rank]++;
             }
@@ -31,7 +27,7 @@ HandRank FlushHouseChecker::check(const Hand& hand) {
             for (const auto& count : rankCount) {
                 if (count.second >= 3) {
                     if (hasThreeOfAKind) {
-                        hasPair = true; // Jika ada dua set isi 3, set kedua dihitung Pair
+                        hasPair = true; 
                     } else {
                         hasThreeOfAKind = true;
                     }
@@ -40,7 +36,6 @@ HandRank FlushHouseChecker::check(const Hand& hand) {
                 }
             }
 
-            // Jika dalam satu lambang terdapat Full House, berarti ini Flush House!
             if (hasThreeOfAKind && hasPair) {
                 hasFlushHouse = true;
                 break;
