@@ -1,40 +1,26 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <random>
-#include <chrono>
 #include "HandGenerator.h"
+#include "Rank.h" // Mengambil RANK_2 sampai RANK_ACE
+#include "Suit.h" // Mengambil SUIT_SPADES, dll
+#include <cstdlib> // Untuk rand()
+#include <ctime>   // Untuk time()
 
-Hand HandGenerator::generateHand()
-{
-    std::cout << "Generating random hand from 52 cards deck...\n";
-
-    // 1. Definisikan lambang (Suit) yang digunakan
-    char suits[] = {'S', 'H', 'C', 'D'}; // Spade, Heart, Clover, Diamond
+Hand HandGenerator::generateRandomHand(int id, int numCards) {
+    std::vector<Card> randomCards;
     
-    // 2. Buat seluruh dek (52 kartu)
-    std::vector<Card> deck;
-    for (char suit : suits) {
-        for (int rank = 1; rank <= 14; ++rank) {
-            deck.push_back({rank, suit});
-        }
+    // Daftar suit yang tersedia berdasarkan konstanta di Suit.h
+    char availableSuits[] = {SUIT_SPADES, SUIT_HEARTS, SUIT_CLUBS, SUIT_DIAMONDS};
+
+    for (int i = 0; i < numCards; ++i) {
+        // 1. Pilih Rank acak (antara 2 sampai 14/RANK_ACE)
+        int randomRank = (std::rand() % 13) + 2; 
+        
+        // 2. Pilih Suit acak dari array
+        char randomSuit = availableSuits[std::rand() % 4];
+
+        // 3. Masukkan ke dalam list kartu
+        randomCards.push_back(Card{randomRank, randomSuit});
     }
 
-    // 3. Acak seluruh deck menggunakan Mersenne Twister engine
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::shuffle(deck.begin(), deck.end(), std::default_random_engine(seed));
-
-    // 4. Ambil 5 kartu teratas untuk hand pemain
-    Hand hand;
-    for (int i = 0; i < 5; ++i) {
-        hand.cards.push_back(deck[i]);
-    }
-
-    // Tampilkan hasil kartu yang di-generate ke console
-    std::cout << "Selected Hand Cards:\n";
-    for (const auto& card : hand.cards) {
-        std::cout << "Rank: " << card.rank << ", Suit: " << card.suit << "\n";
-    }
-
-    return hand;
+    // Kembalikan objek Hand yang sudah terisi
+    return Hand{id, randomCards};
 }

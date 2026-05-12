@@ -1,9 +1,9 @@
-// HandGenerator.h
 #pragma once
-#include "Hand.h"
-#include <vector>
+#include "hand.h" // Agar HandGenerator tahu apa itu 'Hand'
 
-class HandGenerator
-{
+class HandGenerator {
 public:
-    Hand generateHand();
+    // Fungsi untuk membuat Tangan berisi kartu acak
+    // id: nomor identitas tangan, numCards: jumlah kartu yang mau dibuat
+    static Hand generateRandomHand(int id, int numCards);
+};
