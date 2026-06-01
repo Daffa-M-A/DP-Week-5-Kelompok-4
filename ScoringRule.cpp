@@ -1,5 +1,7 @@
 #include <iostream>
 #include "ScoringRule.h"
+#include "JokerManager.h"
+
 ScoringRule::ScoringRule(){
     flushFiveChecker.setNext(&flushHouseChecker);
     flushHouseChecker.setNext(&fiveOfAKindChecker);
@@ -15,13 +17,21 @@ ScoringRule::ScoringRule(){
     pairChecker.setNext(&highCardChecker);
 }
 
-int ScoringRule::scoreHand(const Hand& hand){
-std::cout << "Calculating hand score...\n";
-HandRank rank = flushFiveChecker.check(hand);
-int score = convertRankToScore(rank);
-std::cout << "Final score = " << score << "\n";
-return score;
+int ScoringRule::scoreHand(const Hand& hand, JokerManager& jokerManager) {
+    std::cout << "Calculating hand score...\n";
+    HandRank rank = flushFiveChecker.check(hand);
+    
+    int baseChips = convertRankToScore(rank); 
+    int baseMult = 2; 
+    
+    std::cout << "Base Hand Score: " << baseChips << " Chips x " << baseMult << " Mult\n";
+    
+    int finalScore = jokerManager.calculateFinalScore(hand, baseChips, baseMult);
+    
+    std::cout << "Final score setelah modifikasi Joker = " << finalScore << "\n";
+    return finalScore;
 }
+
 int ScoringRule::convertRankToScore(HandRank rank){
 switch (rank){
     case HandRank::FLUSH_FIVE:

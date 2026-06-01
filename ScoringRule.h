@@ -15,10 +15,14 @@
 #include "FlushHouseChecker/FlushHouseChecker.h"
 #include "FlushFiveChecker/FlushFiveChecker.h"
 
+class JokerManager;
+
 class ScoringRule{
 public:
 ScoringRule();
 int scoreHand(const Hand& hand);
+int scoreHand(const Hand& hand, JokerManager& jokerManager);
+
 private:
 HighCardChecker highCardChecker;
 PairChecker pairChecker;

@@ -8,9 +8,9 @@ ShopSystem::ShopSystem(JokerManager& jm, HandScoreTable& hst, Deck& dk)
 }
 
 void ShopSystem::loadItemDatabase() {
-    itemDatabase["JOKER_ICE"]  = {"JOKER_ICE", "Ice Joker", 6, ItemType::JOKER, "", 0, 0};
-    itemDatabase["PLNT_MERC"]  = {"PLNT_MERC", "Mercury (Planet)", 3, ItemType::PLANET_CARD, "Pair", 2, 15};
-    itemDatabase["TAROT_FOOL"] = {"TAROT_FOOL", "The Fool (Tarot)", 4, ItemType::TAROT_CARD, "Bonus Ace of Spades", 0, 0};
+    itemDatabase["JOKER_ADDMULT"]  = {"JOKER_ADDMULT", "Add Mult Joker", 6, ItemType::JOKER, "Memberikan +80 Chips", 80, 0};
+    itemDatabase["JOKER_PAIR"]  = {"JOKER_PAIR", "Pair Joker", 5, ItemType::JOKER, "Memberikan +15 Multiplier jika mendeteksi kombinasi kartu Pair", 0, 15};
+    itemDatabase["JOKER_DIAMOND"] = {"JOKER_DIAMOND", "Diamond Joker", 7, ItemType::JOKER, "Memberikan +4 Multiplier untuk setiap kartu berlambang Diamond yang dimainkan", 0, 4};
 }
 
 void ShopSystem::generateShopFront(const std::vector<std::string>& itemIds) {
