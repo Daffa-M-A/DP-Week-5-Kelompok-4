@@ -1,40 +1,21 @@
 #pragma once
 #include <string>
 
-// Enum untuk menentukan jenis Blind
-enum class BlindState {
+enum class BlindState {  /// Enum untuk menyimpan jenis-jenis Blind
     SmallBlind,
     BigBlind,
     BossBlind
 };
 
-// Class BlindRule
-class BlindRule {
+class BlindRule {  // Class BlindRule digunakan untuk mengatur sistem Blind
 public:
+    int currentAnte = 1;   // Menyimpan nilai Ante saat ini
+    // Nilai awal = 1
+    BlindState currentState = BlindState::SmallBlind;   // Menyimpan Blind yang sedang aktif
+    // Saat pertama kali dibuat dimulai dari SmallBlind
 
-    // Nilai ante saat ini
-    int currentAnte = 1;
+    bool checkBlind(int score); //fungsi untuk mengecek
+    // apakah score pemain memenuhi syarat Blind
 
-    // State awal Blind adalah SmallBlind
-    BlindState currentState = BlindState::SmallBlind;
-
-    // Fungsi untuk mendapatkan nama Blind dalam bentuk teks
-    std::string getBlindName() {
-
-        // Mengecek state Blind saat ini
-        switch (currentState) {
-
-            case BlindState::SmallBlind:
-                return "SMALL BLIND";
-
-            case BlindState::BigBlind:
-                return "BIG BLIND";
-
-            case BlindState::BossBlind:
-                return "BOSS BLIND";
-
-            default:
-                return "UNKNOWN";
-        }
-    }
+    std::string getBlindName();
 };
