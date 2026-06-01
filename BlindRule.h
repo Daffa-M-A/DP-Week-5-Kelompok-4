@@ -3,7 +3,7 @@
 
 #include <string>
 
-// Pastikan enum class ini sudah ada di atas kelas BlindRule
+// Status tingkatan Blind di dalam game
 enum class BlindState {
     SmallBlind,
     BigBlind,
@@ -12,17 +12,20 @@ enum class BlindState {
 
 class BlindRule {
 private:
-    // SOLUSI ERROR 3: Daftarkan currentState di sini agar dikenali di file .cpp
+    // Menyimpan status Blind ronde saat ini
     BlindState currentState; 
 
 public:
-    // Constructor (Jika kamu menggunakannya untuk set awal currentState)
+    // Constructor untuk set status Blind di awal
     BlindRule(BlindState state); 
 
+    // Mengecek apakah skor pemain berhasil mencapai target
     bool checkBlind(int score);
+
+    // Mengambil nama teks dari Blind yang aktif (untuk UI / Log)
     std::string getBlindName();
 
-    // SOLUSI ERROR 1 & 2: Daftarkan getTargetScore di sini
+    // Mengambil target skor minimal yang harus dicapai pemain
     int getTargetScore(); 
 };
 
