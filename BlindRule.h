@@ -1,21 +1,29 @@
-#pragma once
+#ifndef BLINDRULE_H
+#define BLINDRULE_H
+
 #include <string>
 
-enum class BlindState {  /// Enum untuk menyimpan jenis-jenis Blind
+// Pastikan enum class ini sudah ada di atas kelas BlindRule
+enum class BlindState {
     SmallBlind,
     BigBlind,
     BossBlind
 };
 
-class BlindRule {  // Class BlindRule digunakan untuk mengatur sistem Blind
+class BlindRule {
+private:
+    // SOLUSI ERROR 3: Daftarkan currentState di sini agar dikenali di file .cpp
+    BlindState currentState; 
+
 public:
-    int currentAnte = 1;   // Menyimpan nilai Ante saat ini
-    // Nilai awal = 1
-    BlindState currentState = BlindState::SmallBlind;   // Menyimpan Blind yang sedang aktif
-    // Saat pertama kali dibuat dimulai dari SmallBlind
+    // Constructor (Jika kamu menggunakannya untuk set awal currentState)
+    BlindRule(BlindState state); 
 
-    bool checkBlind(int score); //fungsi untuk mengecek
-    // apakah score pemain memenuhi syarat Blind
-
+    bool checkBlind(int score);
     std::string getBlindName();
+
+    // SOLUSI ERROR 1 & 2: Daftarkan getTargetScore di sini
+    int getTargetScore(); 
 };
+
+#endif
