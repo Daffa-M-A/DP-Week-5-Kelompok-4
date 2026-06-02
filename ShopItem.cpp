@@ -1,4 +1,4 @@
-// ShopItem.cpp
+
 #include "ShopItem.h"
 
 ShopItem::ShopItem(ShopItemData d, std::unique_ptr<Command> effect) 
@@ -15,19 +15,13 @@ void ShopItem::triggerEffect() {
 }
 
 std::unique_ptr<ShopItem> ShopFactory::createItem(
-    const ShopItemData& data, JokerManager& jm, HandScoreTable& hst, Deck& dk) 
+    const ShopItemData& data, JokerManager& jm) 
 {
     std::unique_ptr<Command> effectCmd;
 
     switch (data.type) {
         case ItemType::JOKER:
             effectCmd = std::make_unique<BuyJokerCommand>(jm, data.name);
-            break;
-        case ItemType::PLANET_CARD:
-            effectCmd = std::make_unique<UpgradeHandCommand>(hst, data.effectTarget, data.valA, data.valB);
-            break;
-        case ItemType::TAROT_CARD:
-            effectCmd = std::make_unique<ModifyDeckCommand>(dk, data.effectTarget);
             break;
     }
 

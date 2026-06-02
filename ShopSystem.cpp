@@ -1,14 +1,14 @@
-// ShopSystem.cpp
+
 #include "ShopSystem.h"
 #include <iostream>
 
-ShopSystem::ShopSystem(JokerManager& jm, HandScoreTable& hst, Deck& dk)
-    : jokerManager(jm), handTable(hst), gameDeck(dk) {
+ShopSystem::ShopSystem(JokerManager& jm)
+    : jokerManager(jm) {
     loadItemDatabase();
 }
 
 void ShopSystem::loadItemDatabase() {
-    itemDatabase["JOKER_ADDMULT"]  = {"JOKER_ADDMULT", "Add Mult Joker", 6, ItemType::JOKER, "Memberikan +80 Chips", 80, 0};
+    itemDatabase["JOKER_ADDCHIPS"]  = {"JOKER_ADDCHIPS", "Add Chips Joker", 6, ItemType::JOKER, "Memberikan +80 Chips", 80, 0};
     itemDatabase["JOKER_PAIR"]  = {"JOKER_PAIR", "Pair Joker", 5, ItemType::JOKER, "Memberikan +15 Multiplier jika mendeteksi kombinasi kartu Pair", 0, 15};
     itemDatabase["JOKER_DIAMOND"] = {"JOKER_DIAMOND", "Diamond Joker", 7, ItemType::JOKER, "Memberikan +4 Multiplier untuk setiap kartu berlambang Diamond yang dimainkan", 0, 4};
 }
@@ -19,7 +19,7 @@ void ShopSystem::generateShopFront(const std::vector<std::string>& itemIds) {
     
     for (const auto& id : itemIds) {
         if (itemDatabase.find(id) != itemDatabase.end()) {
-            auto item = ShopFactory::createItem(itemDatabase[id], jokerManager, handTable, gameDeck);
+            auto item = ShopFactory::createItem(itemDatabase[id], jokerManager);
             inventory.addItem(std::move(item));
         }
     }
@@ -32,7 +32,6 @@ void ShopSystem::displayShop(const Money& playerWallet) {
     for (size_t i = 0; i < items.size(); ++i) {
         const auto& data = items[i]->getData();
         std::cout << " [" << i << "] " << data.name << " | Harga: $" << data.cost;
-        if (data.type == ItemType::PLANET_CARD) std::cout << " (Target: " << data.effectTarget << ")";
         std::cout << "\n";
     }
     std::cout << "========================================================\n";

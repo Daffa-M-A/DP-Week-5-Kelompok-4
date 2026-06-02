@@ -1,4 +1,4 @@
-// ShopItem.h
+
 #pragma once
 #include "ShopData.h"
 #include "PurchaseCommands.h"
@@ -18,7 +18,5 @@ class ShopFactory {
 public:
     static std::unique_ptr<ShopItem> createItem(
         const ShopItemData& data, 
-        JokerManager& jm, 
-        HandScoreTable& hst, 
-        Deck& dk);
+        JokerManager& jm);
 };

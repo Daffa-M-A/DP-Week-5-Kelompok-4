@@ -11,7 +11,7 @@ HandRank ThreeOfAKindChecker::check(const Hand& hand) {
 
     bool hasThreeOfAKind = false;
     
-    // Cek apakah ada kartu yang kembar tiga
+    
     for (const auto& count : rankCount) {
         if (count.second >= 3) {
             hasThreeOfAKind = true;

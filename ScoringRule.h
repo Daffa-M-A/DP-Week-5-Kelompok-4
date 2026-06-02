@@ -1,5 +1,5 @@
 #pragma once
-#include "Hand.h"
+#include "hand.h"
 #include "PokerHandChecker.h"
 #include "HighCardChecker/HighCardChecker.h"
 #include "PairChecker/PairChecker.h"

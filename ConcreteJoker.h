@@ -3,15 +3,16 @@
 #include "Suit.h" 
 #include <iostream>
 
-class AddMultJoker : public Joker {
+class AddChipsJoker : public Joker {
 public:
-    AddMultJoker() : Joker("Add Mult Joker") {}
+    AddChipsJoker() : Joker("Add Chips Joker") {}
 
     void onEvaluateScore(ScoreContext& context) override {
         context.chips += 80;
         std::cout << "[" << name << "] Aktif! +80 Chips.\n";
     }
 };
+
 
 class PairJoker : public Joker {
 public:

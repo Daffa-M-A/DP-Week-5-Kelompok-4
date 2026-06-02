@@ -17,6 +17,14 @@ ScoringRule::ScoringRule(){
     pairChecker.setNext(&highCardChecker);
 }
 
+int ScoringRule::scoreHand(const Hand& hand) {
+    std::cout << "Calculating hand score without joker...\n";
+    HandRank rank = flushFiveChecker.check(hand);
+    int baseChips = convertRankToScore(rank); 
+    int baseMult = 2; 
+    return baseChips * baseMult;
+}
+
 int ScoringRule::scoreHand(const Hand& hand, JokerManager& jokerManager) {
     std::cout << "Calculating hand score...\n";
     HandRank rank = flushFiveChecker.check(hand);

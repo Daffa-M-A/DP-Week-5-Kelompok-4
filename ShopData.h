@@ -1,11 +1,9 @@
-// ShopData.h
+
 #pragma once
 #include <string>
 
 enum class ItemType { 
-    JOKER, 
-    PLANET_CARD, 
-    TAROT_CARD 
+    JOKER
 };
 
 struct ShopItemData {
@@ -13,9 +11,9 @@ struct ShopItemData {
     std::string name;
     int cost;
     ItemType type;
-    std::string effectTarget; // Contoh: "Flush", "Ace of Spades"
-    int valA = 0;              // Variabel kustom 1 (misal: bonus Mult)
-    int valB = 0;              // Variabel kustom 2 (misal: bonus Chips)
+    std::string effectTarget; 
+    int valA = 0;              
+    int valB = 0;              
 };
 
 class Money {

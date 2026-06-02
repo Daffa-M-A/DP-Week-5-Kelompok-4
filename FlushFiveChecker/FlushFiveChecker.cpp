@@ -1,6 +1,6 @@
 #include <iostream>
 #include <map>
-#include <utility> // Untuk std::pair
+#include <utility> 
 #include "FlushFiveChecker.h"
 
 HandRank FlushFiveChecker::check(const Hand& hand) {
