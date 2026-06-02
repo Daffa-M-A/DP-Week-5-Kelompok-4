@@ -1,32 +1,48 @@
-#ifndef BLINDRULE_H
-#define BLINDRULE_H
-
+#pragma once
 #include <string>
+#include <memory>
+#include "RewardCommand.h"
 
-// Status tingkatan Blind di dalam game
-enum class BlindState {
-    SmallBlind,
-    BigBlind,
-    BossBlind
-};
+class RuntimeSessionState; 
 
-class BlindRule {
-private:
-    // Menyimpan status Blind ronde saat ini
-    BlindState currentState; 
-
+class BlindState {
 public:
-    // Constructor untuk set status Blind di awal
-    BlindRule(BlindState state); 
+    virtual ~BlindState() = default;
 
-    // Mengecek apakah skor pemain berhasil mencapai target
-    bool checkBlind(int score);
+    virtual std::string getName() const = 0;
+    virtual int getTargetScore(int currentAnte) const = 0;
+    virtual int getRewardMoney() const = 0;
 
-    // Mengambil nama teks dari Blind yang aktif (untuk UI / Log)
-    std::string getBlindName();
+    
+    virtual std::unique_ptr<BlindState> getNextState(RuntimeSessionState& session) const = 0;
 
-    // Mengambil target skor minimal yang harus dicapai pemain
-    int getTargetScore(); 
+    
+    virtual std::unique_ptr<RewardCommand> generateSkipReward() const = 0;
 };
 
-#endif
+class SmallBlindState : public BlindState {
+public:
+    std::string getName() const override;
+    int getTargetScore(int currentAnte) const override;
+    int getRewardMoney() const override;
+    std::unique_ptr<BlindState> getNextState(RuntimeSessionState& session) const override;
+    std::unique_ptr<RewardCommand> generateSkipReward() const override;
+};
+
+class BigBlindState : public BlindState {
+public:
+    std::string getName() const override;
+    int getTargetScore(int currentAnte) const override;
+    int getRewardMoney() const override;
+    std::unique_ptr<BlindState> getNextState(RuntimeSessionState& session) const override;
+    std::unique_ptr<RewardCommand> generateSkipReward() const override;
+};
+
+class BossBlindState : public BlindState {
+public:
+    std::string getName() const override;
+    int getTargetScore(int currentAnte) const override;
+    int getRewardMoney() const override;
+    std::unique_ptr<BlindState> getNextState(RuntimeSessionState& session) const override;
+    std::unique_ptr<RewardCommand> generateSkipReward() const override;
+};

@@ -1,59 +1,53 @@
-#include <iostream>
 #include "BlindRule.h"
+#include "ConcreteCommand.h"
+#include "RuntimeSessionState.h"
+#include <iostream>
 
-// Fungsi untuk mengecek apakah score pemain memenuhi syarat target score yang dinamis
-bool BlindRule::checkBlind(int score) 
-{
-    // Mengambil target score saat ini (berdasarkan state)
-    int targetScore = getTargetScore();
 
-    std::cout << "Checking blind requirement (Target: " << targetScore << ")...\n";
+std::string SmallBlindState::getName() const { return "Small Blind"; }
+int SmallBlindState::getTargetScore(int currentAnte) const { return 50 * currentAnte; }
+int SmallBlindState::getRewardMoney() const { return 3; }
 
-    // Mengecek score pemain terhadap targetScore dinamis, bukan hardcoded angka 5 lagi
-    if (score >= targetScore)
-    {
-        std::cout << "Result: WIN\n";
-        return true;
-    }
-
-    std::cout << "Result: LOSE\n";
-    return false;
+std::unique_ptr<BlindState> SmallBlindState::getNextState(RuntimeSessionState& session) const {
+    std::cout << "[Blind Progression] Pindah ke Big Blind.\n";
+    return std::make_unique<BigBlindState>();
 }
 
-// Fungsi untuk mendapatkan nama string dari status Blind saat ini
-std::string BlindRule::getBlindName()
-{
-    switch (currentState)
-    {
-        case BlindState::SmallBlind:
-            return "SMALL BLIND";
-            
-        case BlindState::BigBlind:
-            return "BIG BLIND";
-            
-        case BlindState::BossBlind:
-            return "BOSS BLIND";
-            
-        default:
-            return "UNKNOWN";
-    }
+std::unique_ptr<RewardCommand> SmallBlindState::generateSkipReward() const {
+    std::cout << "[Skip Reward] Memilih Skip! Membuat Command 'Bonus Hand'.\n";
+    return std::make_unique<BonusHandCommand>();
 }
 
-// FUNGSI TAMBAHAN: Menentukan target score berdasarkan currentState
-int BlindRule::getTargetScore()
-{
-    switch (currentState)
-    {
-        case BlindState::SmallBlind:
-            return 300;   // Target score untuk Small Blind
-            
-        case BlindState::BigBlind:
-            return 450;   // Target score untuk Big Blind
-            
-        case BlindState::BossBlind:
-            return 600;   // Target score untuk Boss Blind
-            
-        default:
-            return 0;
-    }
+
+
+std::string BigBlindState::getName() const { return "Big Blind"; }
+int BigBlindState::getTargetScore(int currentAnte) const { return 75 * currentAnte; }
+int BigBlindState::getRewardMoney() const { return 4; }
+
+std::unique_ptr<BlindState> BigBlindState::getNextState(RuntimeSessionState& session) const {
+    std::cout << "[Blind Progression] Pindah ke Boss Blind.\n";
+    return std::make_unique<BossBlindState>();
+}
+
+std::unique_ptr<RewardCommand> BigBlindState::generateSkipReward() const {
+    std::cout << "[Skip Reward] Memilih Skip! Membuat Command 'Free Playing Card'.\n";
+    return std::make_unique<FreePlayingCardCommand>("Random Spectral Card");
+}
+
+
+
+std::string BossBlindState::getName() const { return "Boss Blind"; }
+int BossBlindState::getTargetScore(int currentAnte) const { return 100 * currentAnte; }
+int BossBlindState::getRewardMoney() const { return 5; }
+
+std::unique_ptr<BlindState> BossBlindState::getNextState(RuntimeSessionState& session) const {
+    session.incrementAnte();
+    std::cout << "[Blind Progression] Boss Blind dikalahkan! Ante naik menjadi " 
+              << session.getCurrentAnte() << ". Kembali ke Small Blind.\n";
+    return std::make_unique<SmallBlindState>();
+}
+
+std::unique_ptr<RewardCommand> BossBlindState::generateSkipReward() const {
+    std::cout << "[Skip Reward] Boss Blind dilewati (Hanya test command).\n";
+    return std::make_unique<BonusHandCommand>();
 }
