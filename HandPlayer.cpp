@@ -5,8 +5,7 @@
 
 void HandPlayer::playHand(const Hand &availableHand) {
     selectedCards.clear();
-    
-    std::vector<int> chosenIndices; 
+    chosenIndices.clear();
 
     std::cout << "PEMILIHAN KARTU\n";
     std::cout << "Kartu di tanganmu saat ini:\n";

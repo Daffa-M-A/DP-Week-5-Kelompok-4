@@ -1,7 +1,10 @@
 #include "GameManager.h"
+#include <iostream>
+
 int main()
 {
-GameManager gameManager;
-gameManager.runSession();
-return 0;
+    GameManager gameManager;
+    gameManager.startInteractiveSession();
+    
+    return 0;
 }

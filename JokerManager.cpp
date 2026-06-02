@@ -1,5 +1,13 @@
 #include "JokerManager.h"
+#include "ConcreteJoker.h"
 #include <iostream> 
+
+void JokerManager::addJoker(const std::string& name) {
+    if (name == "Add Chips Joker") equipJoker(new AddChipsJoker());
+    else if (name == "Pair Joker") equipJoker(new PairJoker());
+    else if (name == "Diamond Joker") equipJoker(new DiamondJoker());
+    else std::cout << "[JokerManager] [ERROR] Joker '" << name << "' tidak dikenali!\n";
+}
 
 void JokerManager::equipJoker(Joker* joker) {
     if (joker != nullptr) {

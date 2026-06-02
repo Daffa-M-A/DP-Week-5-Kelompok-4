@@ -1,11 +1,12 @@
 #pragma once
-#include "Hand.h"
+#include "hand.h"
 #include <vector>
 
 class HandPlayer {
 private:
     Hand finalHand; 
     std::vector<Card> selectedCards;
+    std::vector<int> chosenIndices;
 
 public:
     void playHand(const Hand &availableHand);
@@ -13,4 +14,5 @@ public:
     void showSelected() const;
 
     Hand getChosenHand() const { return finalHand; }
+    std::vector<int> getChosenIndices() const { return chosenIndices; }
 };

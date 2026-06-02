@@ -1,5 +1,5 @@
 #pragma once
-#include "Hand.h"
+#include "hand.h"
 enum class HandRank {
 HIGH_CARD,
 PAIR,
@@ -17,6 +17,7 @@ FLUSH_FIVE
 };
 class PokerHandChecker{
 public:
+virtual ~PokerHandChecker() = default;
 virtual HandRank check(const Hand& hand) = 0;
 void setNext(PokerHandChecker* next);
 protected:
