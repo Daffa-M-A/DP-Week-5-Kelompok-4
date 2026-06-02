@@ -1,12 +1,9 @@
 #pragma once
 #include "hand.h"
-#include <vector>
+#include "Deck.h"
 
-class HandGenerator
-{
-private:
-    int nextHandId = 1;
-
+class HandGenerator {
 public:
-    Hand generateRandomHand(int id, int numCards);
+    
+    Hand generateHand(Deck& deck, int id, int numCards);
 };
