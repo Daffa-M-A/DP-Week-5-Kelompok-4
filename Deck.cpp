@@ -42,3 +42,7 @@ Card Deck::drawCard() {
 int Deck::getRemainingCards() const {
     return cards.size();
 }
+
+void Deck::addCard(Card card) {
+    cards.push_back(card);
+}

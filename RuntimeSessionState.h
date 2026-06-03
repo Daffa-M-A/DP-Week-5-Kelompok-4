@@ -5,6 +5,7 @@
 #include "RewardCommand.h"
 #include "BlindRule.h"
 #include "ShopData.h"
+#include "Card.h"
 
 class RuntimeSessionState {
 private:
@@ -16,6 +17,7 @@ private:
     
     std::unique_ptr<BlindState> currentBlind;
     std::vector<std::unique_ptr<RewardCommand>> pendingCommands;
+    std::vector<Card> extraCardsToInject;
 
 public:
     
@@ -27,10 +29,26 @@ public:
 
     
     void incrementAnte() { currentAnte++; }
+
+    void resetForNewBlind() {
+        remainingPlays = 4;
+        remainingDiscards = 3;
+        std::cout << "[RuntimeState] State di-reset untuk Blind baru (Plays: 4, Discards: 3).\n";
+    }
     
     void addRemainingPlays(int amount) {
         remainingPlays += amount;
         std::cout << "[RuntimeState] Jatah memutar kartu (plays) ditambah: " << amount << ". Total plays: " << remainingPlays << "\n";
+    }
+
+    void addExtraCard(Card card) {
+        extraCardsToInject.push_back(card);
+    }
+
+    std::vector<Card> getAndClearExtraCards() {
+        std::vector<Card> cards = std::move(extraCardsToInject);
+        extraCardsToInject.clear();
+        return cards;
     }
 
     void addScore(int amount) {

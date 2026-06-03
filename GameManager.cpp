@@ -32,7 +32,7 @@ void GameManager::startInteractiveSession() {
 
         if (action == 1) {
             playBlind();
-            if (sessionState.getRemainingPlays() < 0) {
+            if (sessionState.getRemainingPlays() == 0 && sessionState.getTotalScore() < currentBlind->getTargetScore(sessionState.getCurrentAnte())) {
                  std::cout << "\n[GAME OVER] Anda kehabisan jatah Plays!\n";
                  gameRunning = false;
             }
@@ -50,13 +50,20 @@ void GameManager::playBlind() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     int targetScore = currentBlind->getTargetScore(sessionState.getCurrentAnte());
     
-    sessionState.checkAndExecuteCommands(RewardTiming::Start);
-
     bool blindCleared = false;
     
     // Clear persistent hand at the start of a new blind to ensure clean state
     persistentHand.cards.clear();
     gameDeck.resetAndShuffle();
+
+    // Rewards with Start timing are executed AFTER deck reset
+    sessionState.checkAndExecuteCommands(RewardTiming::Start);
+    
+    // Inject any extra cards from rewards into the deck
+    auto extraCards = sessionState.getAndClearExtraCards();
+    for (const auto& card : extraCards) {
+        gameDeck.addCard(card);
+    }
 
     while (sessionState.getRemainingPlays() > 0 && !blindCleared) {
         std::cout << "\n=== Sisa Plays: " << sessionState.getRemainingPlays() 
@@ -171,6 +178,10 @@ void GameManager::updateGameState() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     auto nextBlind = currentBlind->getNextState(sessionState);
     sessionState.setCurrentBlind(std::move(nextBlind));
+    
+    // Reset plays/discards for the next blind
+    sessionState.resetForNewBlind();
+
     sessionState.checkAndExecuteCommands(RewardTiming::NextBlind);
     if (sessionState.getCurrentBlind()->getName() == "Small Blind") {
         sessionState.checkAndExecuteCommands(RewardTiming::NextAnte);
