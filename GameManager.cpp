@@ -2,10 +2,12 @@
 #include <iostream>
 #include <algorithm>
 
+// Konstruktor GameManager: Menginisialisasi sistem toko dan mengatur state awal permainan ke Small Blind.
 GameManager::GameManager() : shopSystem(jokerManager) {
     sessionState.setCurrentBlind(std::make_unique<SmallBlindState>());
 }
 
+// Memulai dan mengatur loop utama interaktif permainan, menangani pilihan pemain (play, skip, atau exit).
 void GameManager::startInteractiveSession() {
     bool gameRunning = true;
     while (gameRunning) {
@@ -46,6 +48,7 @@ void GameManager::startInteractiveSession() {
     }
 }
 
+// Mengelola alur gameplay utama dalam satu Blind, mulai dari pembagian kartu, aksi pemain, hingga perhitungan skor dan fase toko.
 void GameManager::playBlind() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     int targetScore = currentBlind->getTargetScore(sessionState.getCurrentAnte());
@@ -162,6 +165,7 @@ void GameManager::playBlind() {
     }
 }
 
+// Menangani logika ketika pemain memilih untuk melewati (skip) Blind saat ini, serta menyimpan perintah reward yang didapat.
 void GameManager::skipBlind() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
 
@@ -174,6 +178,7 @@ void GameManager::skipBlind() {
     updateGameState();
 }
 
+// Memperbarui state permainan setelah Blind selesai, mengatur transisi ke Blind berikutnya, dan mengeksekusi reward yang tertunda.
 void GameManager::updateGameState() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     auto nextBlind = currentBlind->getNextState(sessionState);
