@@ -2,12 +2,10 @@
 #include <iostream>
 #include <algorithm>
 
-// Konstruktor GameManager: Menginisialisasi sistem toko dan mengatur state awal permainan ke Small Blind.
 GameManager::GameManager() : shopSystem(jokerManager) {
     sessionState.setCurrentBlind(std::make_unique<SmallBlindState>());
 }
 
-// Memulai dan mengatur loop utama interaktif permainan, menangani pilihan pemain (play, skip, atau exit).
 void GameManager::startInteractiveSession() {
     bool gameRunning = true;
     while (gameRunning) {
@@ -48,21 +46,17 @@ void GameManager::startInteractiveSession() {
     }
 }
 
-// Mengelola alur gameplay utama dalam satu Blind, mulai dari pembagian kartu, aksi pemain, hingga perhitungan skor dan fase toko.
 void GameManager::playBlind() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     int targetScore = currentBlind->getTargetScore(sessionState.getCurrentAnte());
     
     bool blindCleared = false;
     
-    // Clear persistent hand at the start of a new blind to ensure clean state
     persistentHand.cards.clear();
     gameDeck.resetAndShuffle();
 
-    // Rewards with Start timing are executed AFTER deck reset
     sessionState.checkAndExecuteCommands(RewardTiming::Start);
     
-    // Inject any extra cards from rewards into the deck
     auto extraCards = sessionState.getAndClearExtraCards();
     for (const auto& card : extraCards) {
         gameDeck.addCard(card);
@@ -72,12 +66,11 @@ void GameManager::playBlind() {
         std::cout << "\n=== Sisa Plays: " << sessionState.getRemainingPlays() 
                   << " | Sisa Discards: " << sessionState.getRemainingDiscards() << " ===\n";
                   
-        // Refill persistentHand to numCards
         int cardsNeeded = numCards - persistentHand.cards.size();
         if (cardsNeeded > 0) {
             Hand newCards = handGenerator.generateHand(gameDeck, handCounter++, cardsNeeded);
             persistentHand.cards.insert(persistentHand.cards.end(), newCards.cards.begin(), newCards.cards.end());
-            persistentHand.id = handCounter; // Update ID for reference
+            persistentHand.id = handCounter; 
         }
         
         playerInterface.playHand(persistentHand);
@@ -107,7 +100,6 @@ void GameManager::playBlind() {
             continue;
         } else if (action == 2) {
             if (sessionState.useDiscard()) {
-                // Hapus dari persistent hand
                 std::sort(chosenIndices.rbegin(), chosenIndices.rend());
                 for (int index : chosenIndices) {
                     persistentHand.cards.erase(persistentHand.cards.begin() + index);
@@ -116,18 +108,15 @@ void GameManager::playBlind() {
             }
             continue;
         } else if (action == 1) {
-            // Play Kartu
             int scoreGained = scoringSystem.scoreHand(chosenHand, jokerManager);
             sessionState.addScore(scoreGained);
             sessionState.usePlay();
 
-            // Hapus dari persistent hand
             std::sort(chosenIndices.rbegin(), chosenIndices.rend());
             for (int index : chosenIndices) {
                 persistentHand.cards.erase(persistentHand.cards.begin() + index);
             }
 
-            // Cek Kemenangan
             if (sessionState.getTotalScore() >= targetScore) {
                 blindCleared = true;
                 std::cout << "\n[WIN] Sesi " << currentBlind->getName() << " Selesai Dimainkan (Menang)!\n";
@@ -165,7 +154,6 @@ void GameManager::playBlind() {
     }
 }
 
-// Menangani logika ketika pemain memilih untuk melewati (skip) Blind saat ini, serta menyimpan perintah reward yang didapat.
 void GameManager::skipBlind() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
 
@@ -178,13 +166,11 @@ void GameManager::skipBlind() {
     updateGameState();
 }
 
-// Memperbarui state permainan setelah Blind selesai, mengatur transisi ke Blind berikutnya, dan mengeksekusi reward yang tertunda.
 void GameManager::updateGameState() {
     BlindState* currentBlind = sessionState.getCurrentBlind();
     auto nextBlind = currentBlind->getNextState(sessionState);
     sessionState.setCurrentBlind(std::move(nextBlind));
     
-    // Reset plays/discards for the next blind
     sessionState.resetForNewBlind();
 
     sessionState.checkAndExecuteCommands(RewardTiming::NextBlind);
